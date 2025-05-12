@@ -47,7 +47,7 @@ let estados = {};
         }
 
         // Busca os estados das bombas
-        const estados = await fetch("/estado_bombas").then(res => res.json());
+        estados = await fetch("/estado_bombas").then(res => res.json());
 
         for (let i = 1; i <= 4; i++) {
           const ligado = estados[i] === 1 || estados[String(i)] === 1;
