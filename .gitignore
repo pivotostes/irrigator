@@ -56,12 +56,11 @@ Mkfile.old
 dkms.conf
 
 ### Flask ###
-instance/*
-!instance/.gitignore
 .webassets-cache
 .env
 !instance/bombas_estado.txt
 !instance/sensores.txt
+instance/*
 
 ### Flask.Python Stack ###
 # Byte-compiled / optimized / DLL files
@@ -127,7 +126,6 @@ db.sqlite3
 db.sqlite3-journal
 
 # Flask stuff:
-instance/
 
 # Scrapy stuff:
 .scrapy
