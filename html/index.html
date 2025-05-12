@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Monitoramento e Controle</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="script.js"></script>
+
+<body>
+  <h1>Monitoramento e Controle</h1>
+
+  <h2>Umidade do Solo</h2>
+
+  <div class="sensor-container">
+    <label for="sensor1">
+      Sensor 1
+      <span id="sensor1-alert" class="sensor-alert"></span>
+    </label>
+    <div class="progress-bar">
+      <div id="sensor1-bar" class="progress-fill">0%</div>
+    </div>
+  </div>
+
+  <div class="sensor-container">
+    <label for="sensor2">
+      Sensor 2
+      <span id="sensor2-alert" class="sensor-alert"></span>
+    </label>
+    <div class="progress-bar">
+      <div id="sensor2-bar" class="progress-fill">0%</div>
+    </div>
+  </div>
+
+  <div class="sensor-container">
+    <label for="sensor3">
+      Sensor 3
+      <span id="sensor3-alert" class="sensor-alert"></span>
+    </label>
+    <div class="progress-bar">
+      <div id="sensor3-bar" class="progress-fill">0%</div>
+    </div>
+  </div>
+
+  <div class="sensor-container">
+    <label for="sensor4">
+      Sensor 4
+      <span id="sensor4-alert" class="sensor-alert"></span>
+    </label>
+    <div class="progress-bar">
+      <div id="sensor4-bar" class="progress-fill">0%</div>
+    </div>
+  </div>
+
+  <h2>Controle de Bombas</h2>
+
+  <div class="botao-container">
+    <div class="bomba-bloco">
+      <label id="bomba1-label" for="bomba1" class="botao-label">❌ Bomba 1</label>
+      <button id="bomba1" class="botao desligada" onclick="togglePump(1)">Desligado</button>
+    </div>
+  </div>
+
+  <div class="botao-container">
+    <div class="bomba-bloco">
+      <label id="bomba2-label" for="bomba2" class="botao-label">❌ Bomba 2</label>
+      <button id="bomba2" class="botao desligada" onclick="togglePump(2)">Desligado</button>
+    </div>
+  </div>
+
+  <div class="botao-container">
+    <div class="bomba-bloco">
+      <label id="bomba3-label" for="bomba3" class="botao-label">❌ Bomba 3</label>
+      <button id="bomba3" class="botao desligada" onclick="togglePump(3)">Desligado</button>
+    </div>
+  </div>
+
+  <div class="botao-container">
+    <div class="bomba-bloco">
+      <label id="bomba4-label" for="bomba4" class="botao-label">❌ Bomba 4</label>
+      <button id="bomba4" class="botao desligada" onclick="togglePump(4)">Desligado</button>
+    </div>
+  </div>
+
+</body>
+</html>
