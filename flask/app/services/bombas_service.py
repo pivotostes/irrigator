@@ -1,11 +1,22 @@
+from flask import request, jsonify
 import json
 import os
 
-ARQUIVO = "instance/bomba_estado.txt"
+BOMBAS_FILE = os.path.join('instance', 'bombas_estado.txt')
 
-def obter_estado_bombas():
-    if os.path.exists(ARQUIVO):
-        with open(ARQUIVO, "r") as f:
+
+# Garante que o arquivo exista com todas bombas desligadas
+def inicializar_bombas():
+    if not os.path.exists(BOMBAS_FILE):
+        estados_iniciais = {str(i): 0 for i in range(1, 5)}
+        with open(BOMBAS_FILE, 'w') as f:
+            json.dump(estados_iniciais, f)
+
+
+# Retorna o estado atual das bombas
+def get_estado_bombas():
+    if os.path.exists(BOMBAS_FILE):
+        with open(BOMBAS_FILE, "r") as f:
             try:
                 estados = json.load(f)
             except json.JSONDecodeError:
@@ -14,28 +25,27 @@ def obter_estado_bombas():
         estados = {}
     return jsonify(estados)
 
-def controlar_bomba(data):
-    if not data or "bomba" not in data or "estado" not in data:
-        return "JSON com 'bomba' e 'estado' é obrigatório", 400
 
-    try:
-        bomba = int(data["bomba"])
-        estado = int(data["estado"])
-    except ValueError:
-        return "Valores inválidos", 400
+# Altera o estado de uma bomba específica
+def alterar_estado_bomba(id):
+    if not 1 <= id <= 4:
+        return jsonify({"erro": "ID da bomba deve estar entre 1 e 4"}), 400
 
-    if os.path.exists(ARQUIVO):
-        with open(ARQUIVO, "r") as f:
-            try:
-                estados = json.load(f)
-            except json.JSONDecodeError:
-                estados = {}
-    else:
-        estados = {}
+    data = request.get_json()
+    if not data or "estado" not in data:
+        return jsonify({"erro": "Corpo JSON com 'estado' é obrigatório"}), 400
 
-    estados[str(bomba)] = estado
+    estado = int(data["estado"])
+    if estado not in [0, 1]:
+        return jsonify({"erro": "Estado deve ser 0 ou 1"}), 400
 
-    with open(ARQUIVO, "w") as f:
+    # Carrega o estado atual e atualiza
+    with open(BOMBAS_FILE, 'r') as f:
+        estados = json.load(f)
+
+    estados[str(id)] = estado
+
+    with open(BOMBAS_FILE, 'w') as f:
         json.dump(estados, f)
 
-    return f"Bomba {bomba} {'Ligada' if estado else 'Desligada'}"
+    return jsonify({str(id): estado})

@@ -2,7 +2,7 @@ let estados = {};
 
     async function updateStatus() {
       try {
-        const sensores = await fetch("sensores.txt").then(res => res.json());
+        const sensores = await fetch("/estado_sensores").then(res => res.json());
         const sensoresMap = {
           1: sensores.s1,
           2: sensores.s2,
@@ -46,34 +46,54 @@ let estados = {};
           }
         }
 
-        // Atualiza o estado das bombas
-        estados = await fetch("bomba_estado.txt").then(res => res.json());
+        // Busca os estados das bombas
+        const estados = await fetch("/estado_bombas").then(res => res.json());
 
         for (let i = 1; i <= 4; i++) {
+          const ligado = estados[i] === 1 || estados[String(i)] === 1;
+
           const btn = document.getElementById(`bomba${i}`);
-          const ligado = estados[i] === 1;
           const label = document.getElementById(`bomba${i}-label`);
+
           if (label) {
-            label.textContent = ligado ? '💧 Bomba ' + i : '❌ Bomba ' + i;
+            label.textContent = ligado ? `💧 Bomba ${i}` : `❌ Bomba ${i}`;
           }
-          if (btn){
-            btn.textContent = ligado ? "🟢 Ligado" : "🔴 Desligado";
+
+          if (btn) {
             btn.innerHTML = ligado
-            ? '<i class="fas fa-toggle-on"></i> Ligado'
-            : '<i ßclass="fas fa-toggle-off"></i> Desligado';
+              ? '<i class="fas fa-toggle-on"></i> Ligado'
+              : '<i class="fas fa-toggle-off"></i> Desligado';
             btn.classList.remove("ligada", "desligada");
             btn.classList.add(ligado ? "ligada" : "desligada");
           }
         }
       } catch (err) {
-        console.error("Erro ao atualizar status:", err);
+        console.error("Erro ao atualizar status da bomba:", err);
       }
+
     }
 
     async function togglePump(id) {
       const novoEstado = estados[id] === 1 ? 0 : 1;
-      await fetch(`api.php?bomba=${id}&estado=${novoEstado}`);
-      updateStatus();
+
+      try {
+        const response = await fetch(`/estado_bombas/${id}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ estado: novoEstado })
+        });
+
+        if (!response.ok) {
+          throw new Error("Erro ao atualizar estado da bomba");
+        }
+
+        // Atualiza interface após mudar o estado
+        await updateStatus();
+      } catch (err) {
+        console.error("Erro ao alternar bomba:", err);
+      }
     }
 
     setInterval(updateStatus, 2000);
