@@ -1,5 +1,5 @@
 #include <SPI.h>
-#include <UIPEthernet.h>
+#include <Ethernet.h>
 #include <ArduinoJson.h>
 
 // MAC address (pode ser qualquer valor único)
@@ -9,7 +9,7 @@ static byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 // IPAddress ip(192, 168, 15, 177);  // Endereço do Arduino na rede
 
 // IP do servidor Flask
-IPAddress server(192, 168, 15, 8);
+IPAddress server(192, 168, 15, 16);
 
 // Endpoint da API Flask
 const char* endpoint = "/estado_bombas";
